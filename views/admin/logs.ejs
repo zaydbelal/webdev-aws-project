@@ -1,0 +1,27 @@
+<%- include('../partials/header', { title: 'Audit Log' }) %>
+<h1>Audit Log</h1>
+<p class="muted">Every approval and rejection decision, with timestamp and reviewer.</p>
+
+<% if (logs.length === 0) { %>
+  <div class="card empty-state">No admin actions recorded yet.</div>
+<% } else { %>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Timestamp</th><th>Reviewer</th><th>Action</th><th>Target</th><th>Details</th></tr></thead>
+        <tbody>
+          <% logs.forEach(function(log) { %>
+            <tr>
+              <td><%= new Date(log.created_at).toLocaleString() %></td>
+              <td><%= log.admin_name %><br /><span class="muted small">ID <%= log.admin_user_id %> &middot; <%= log.admin_email %></span></td>
+              <td><span class="badge badge-<%= log.action === 'approved' ? 'approved' : 'rejected' %>"><%= log.action %></span></td>
+              <td><%= log.target_type %> #<%= log.target_id %></td>
+              <td><%= log.details %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% } %>
+<%- include('../partials/footer') %>

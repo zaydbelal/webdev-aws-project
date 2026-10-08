@@ -1,0 +1,68 @@
+<%- include('../partials/header', { title: 'Register' }) %>
+<div class="card narrow">
+  <h1>Register</h1>
+  <form action="/register" method="POST" class="form" id="register-form">
+    <label>I am a...
+      <select name="role" id="role-select" required>
+        <option value="" disabled <%= !form.role ? 'selected' : '' %>>Select account type</option>
+        <option value="student" <%= form.role === 'student' ? 'selected' : '' %>>Student Applicant</option>
+        <option value="recruiter" <%= form.role === 'recruiter' ? 'selected' : '' %>>Company Recruiter</option>
+      </select>
+    </label>
+
+    <label>Full Name
+      <input type="text" name="name" value="<%= form.name || '' %>" required />
+    </label>
+    <label>Email
+      <input type="email" name="email" value="<%= form.email || '' %>" required />
+    </label>
+    <label>Password
+      <input type="password" name="password" minlength="6" required />
+    </label>
+
+    <fieldset id="student-fields" class="role-fields">
+      <legend>Student Profile</legend>
+      <label>Branch
+        <input type="text" name="branch" placeholder="e.g. CSE" value="<%= form.branch || '' %>" />
+      </label>
+      <label>CGPA
+        <input type="number" name="cgpa" step="0.01" min="0" max="10" value="<%= form.cgpa || '' %>" />
+      </label>
+      <label>Graduation Year
+        <input type="number" name="graduation_year" value="<%= form.graduation_year || '' %>" />
+      </label>
+      <label>Resume Link
+        <input type="url" name="resume_link" placeholder="https://..." value="<%= form.resume_link || '' %>" />
+      </label>
+    </fieldset>
+
+    <fieldset id="recruiter-fields" class="role-fields">
+      <legend>Company Details</legend>
+      <label>Company Name
+        <input type="text" name="company_name" value="<%= form.company_name || '' %>" />
+      </label>
+      <label>Company Website
+        <input type="url" name="company_website" placeholder="https://..." value="<%= form.company_website || '' %>" />
+      </label>
+      <p class="muted small">New companies require Placement Cell approval before postings become visible to students.</p>
+    </fieldset>
+
+    <button type="submit" class="button">Create Account</button>
+  </form>
+  <p class="muted">Already have an account? <a href="/login">Log in here</a>.</p>
+</div>
+
+<script>
+  const roleSelect = document.getElementById('role-select');
+  const studentFields = document.getElementById('student-fields');
+  const recruiterFields = document.getElementById('recruiter-fields');
+
+  function syncFields() {
+    studentFields.style.display = roleSelect.value === 'student' ? 'grid' : 'none';
+    recruiterFields.style.display = roleSelect.value === 'recruiter' ? 'grid' : 'none';
+  }
+
+  roleSelect.addEventListener('change', syncFields);
+  syncFields();
+</script>
+<%- include('../partials/footer') %>

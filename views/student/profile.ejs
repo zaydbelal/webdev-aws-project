@@ -1,0 +1,21 @@
+<%- include('../partials/header', { title: 'My Profile' }) %>
+<h1>My Profile</h1>
+<div class="card narrow">
+  <p><strong><%= student.name %></strong><br /><span class="muted small"><%= student.email %></span></p>
+  <form action="/student/profile" method="POST" class="form">
+    <label>Branch
+      <input type="text" name="branch" value="<%= student.branch %>" required />
+    </label>
+    <label>CGPA
+      <input type="number" name="cgpa" step="0.01" min="0" max="10" value="<%= student.cgpa %>" required />
+    </label>
+    <label>Graduation Year
+      <input type="number" name="graduation_year" value="<%= student.graduation_year %>" required />
+    </label>
+    <label>Resume Link
+      <input type="url" name="resume_link" value="<%= student.resume_link %>" placeholder="https://..." />
+    </label>
+    <button type="submit" class="button">Save Profile</button>
+  </form>
+</div>
+<%- include('../partials/footer') %>

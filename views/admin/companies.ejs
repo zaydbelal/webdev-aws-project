@@ -1,0 +1,46 @@
+<%- include('../partials/header', { title: 'Companies' }) %>
+<h1>Companies</h1>
+
+<div class="tabs">
+  <a href="/admin/companies?status=pending" class="<%= filter === 'pending' ? 'active' : '' %>">Pending</a>
+  <a href="/admin/companies?status=approved" class="<%= filter === 'approved' ? 'active' : '' %>">Approved</a>
+  <a href="/admin/companies?status=rejected" class="<%= filter === 'rejected' ? 'active' : '' %>">Rejected</a>
+</div>
+
+<% if (companies.length === 0) { %>
+  <div class="card empty-state">No <%= filter %> companies.</div>
+<% } else { %>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Company</th><th>Recruiter</th><th>Website</th><th>Jobs</th><th>Registered</th><th>Actions</th></tr></thead>
+        <tbody>
+          <% companies.forEach(function(c) { %>
+            <tr>
+              <td><%= c.name %><br /><span class="muted small"><%= c.description %></span></td>
+              <td><%= c.recruiter_name %><br /><span class="muted small"><%= c.recruiter_email %></span></td>
+              <td><% if (c.website) { %><a href="<%= c.website %>" target="_blank" rel="noopener"><%= c.website %></a><% } else { %>&mdash;<% } %></td>
+              <td><%= c.job_count %></td>
+              <td><%= new Date(c.created_at).toLocaleDateString() %></td>
+              <td>
+                <% if (filter === 'pending') { %>
+                  <div class="actions-row">
+                    <form action="/admin/companies/<%= c.id %>/approve" method="POST">
+                      <button type="submit" class="button small">Approve</button>
+                    </form>
+                    <form action="/admin/companies/<%= c.id %>/reject" method="POST">
+                      <button type="submit" class="button small danger">Reject</button>
+                    </form>
+                  </div>
+                <% } else { %>
+                  <span class="badge badge-<%= c.status %>"><%= c.status %></span>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% } %>
+<%- include('../partials/footer') %>

@@ -1,0 +1,35 @@
+<%- include('../partials/header', { title: 'Job Openings' }) %>
+<h1>Job Openings</h1>
+<p class="muted">Approved postings from verified companies. Eligibility is checked automatically against your profile.</p>
+
+<% if (jobs.length === 0) { %>
+  <div class="card empty-state">No approved job openings yet. Check back soon.</div>
+<% } else { %>
+  <div class="grid">
+    <% jobs.forEach(function(job) { %>
+      <div class="job-card">
+        <h3><a href="/student/jobs/<%= job.id %>"><%= job.title %></a></h3>
+        <div class="job-meta">
+          <span><%= job.company_name %></span>
+          <span><%= job.location %></span>
+          <span><%= job.package_lpa %></span>
+        </div>
+        <div class="job-meta">
+          <span>Min CGPA: <%= job.min_cgpa %></span>
+          <span>Branches: <%= job.allowed_branches || 'All branches' %></span>
+        </div>
+        <div class="actions-row">
+          <% if (job.alreadyApplied) { %>
+            <span class="badge badge-applied">Already Applied</span>
+          <% } else if (job.eligibility.eligible) { %>
+            <span class="badge badge-approved">Eligible</span>
+          <% } else { %>
+            <span class="badge badge-rejected">Not Eligible</span>
+          <% } %>
+          <a class="button small secondary" href="/student/jobs/<%= job.id %>">View Details</a>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+<% } %>
+<%- include('../partials/footer') %>

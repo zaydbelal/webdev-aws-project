@@ -1,0 +1,37 @@
+<%- include('../partials/header', { title: job.title }) %>
+<a href="/student/dashboard" class="muted small">&larr; Back to openings</a>
+<div class="card">
+  <h1><%= job.title %></h1>
+  <p class="muted"><%= job.company_name %> &middot; <%= job.location %> &middot; <%= job.package_lpa %></p>
+
+  <h3>Description</h3>
+  <p><%= job.description %></p>
+
+  <h3>Eligibility Criteria</h3>
+  <ul>
+    <li>Minimum CGPA: <%= job.min_cgpa %></li>
+    <li>Eligible Branches: <%= job.allowed_branches || 'All branches' %></li>
+  </ul>
+
+  <h3>About <%= job.company_name %></h3>
+  <p class="muted"><%= job.company_description || 'No description provided.' %></p>
+
+  <% if (existingApplication) { %>
+    <p><span class="badge badge-<%= existingApplication.status %>"><%= existingApplication.status.replace('_', ' ') %></span>
+      &nbsp;You applied to this role on <%= new Date(existingApplication.applied_at).toLocaleDateString() %>.</p>
+  <% } else if (eligibility.eligible) { %>
+    <form action="/student/jobs/<%= job.id %>/apply" method="POST">
+      <button type="submit" class="button">Apply Now</button>
+    </form>
+  <% } else { %>
+    <div class="notice-box">
+      <strong>You are not eligible to apply for this role.</strong>
+      <ul>
+        <% eligibility.reasons.forEach(function(reason) { %>
+          <li><%= reason %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+</div>
+<%- include('../partials/footer') %>
