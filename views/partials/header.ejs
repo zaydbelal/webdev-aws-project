@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof title !== 'undefined' ? title + ' · Campus Placement Portal' : 'Campus Placement Portal' %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">Campus Placement Portal</a>
+    <nav class="nav">
+      <% if (currentUser) { %>
+        <% if (currentUser.role === 'student') { %>
+          <a href="/student/dashboard">Job Openings</a>
+          <a href="/student/applications">My Applications</a>
+          <a href="/student/profile">Profile</a>
+        <% } else if (currentUser.role === 'recruiter') { %>
+          <a href="/recruiter/dashboard">Dashboard</a>
+          <a href="/recruiter/company">Company</a>
+          <a href="/recruiter/jobs">Job Postings</a>
+        <% } else if (currentUser.role === 'admin') { %>
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/companies">Companies</a>
+          <a href="/admin/jobs">Job Postings</a>
+          <a href="/admin/logs">Audit Log</a>
+        <% } %>
+        <span class="who">
+          <%= currentUser.name %> <span class="role-badge role-<%= currentUser.role %>"><%= currentUser.role %></span>
+        </span>
+        <form action="/logout" method="POST" class="inline-form">
+          <button type="submit" class="link-button">Log Out</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Log In</a>
+        <a href="/register">Register</a>
+      <% } %>
+    </nav>
+  </header>
+  <main class="container">
+    <% if (typeof flash !== 'undefined' && flash) { %>
+      <div class="flash flash-<%= flash.type %>"><%= flash.message %></div>
+    <% } %>

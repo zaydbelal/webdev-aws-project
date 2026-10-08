@@ -1,0 +1,30 @@
+<%- include('../partials/header', { title: 'Job Postings' }) %>
+<div class="actions-row" style="justify-content: space-between; margin-bottom: 18px;">
+  <h1 style="margin: 0;">Job Postings</h1>
+  <a class="button" href="/recruiter/jobs/new">+ Post a New Job</a>
+</div>
+
+<% if (jobs.length === 0) { %>
+  <div class="card empty-state">You haven't posted any jobs yet.</div>
+<% } else { %>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Title</th><th>Status</th><th>Min CGPA</th><th>Branches</th><th>Applicants</th><th>Posted</th></tr></thead>
+        <tbody>
+          <% jobs.forEach(function(job) { %>
+            <tr>
+              <td><a href="/recruiter/jobs/<%= job.id %>"><%= job.title %></a></td>
+              <td><span class="badge badge-<%= job.status %>"><%= job.status %></span></td>
+              <td><%= job.min_cgpa %></td>
+              <td><%= job.allowed_branches || 'All' %></td>
+              <td><%= job.applicant_count %></td>
+              <td><%= new Date(job.created_at).toLocaleDateString() %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% } %>
+<%- include('../partials/footer') %>

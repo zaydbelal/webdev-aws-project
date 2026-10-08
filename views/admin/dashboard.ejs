@@ -1,0 +1,51 @@
+<%- include('../partials/header', { title: 'Admin Dashboard' }) %>
+<h1>Placement Cell Dashboard</h1>
+
+<div class="stats-row">
+  <div class="stat"><div class="value"><%= stats.pendingCompanies %></div><div class="label">Pending Companies</div></div>
+  <div class="stat"><div class="value"><%= stats.pendingJobs %></div><div class="label">Pending Job Postings</div></div>
+  <div class="stat"><div class="value"><%= stats.totalStudents %></div><div class="label">Students</div></div>
+  <div class="stat"><div class="value"><%= stats.totalRecruiters %></div><div class="label">Recruiters</div></div>
+  <div class="stat"><div class="value"><%= stats.totalCompanies %></div><div class="label">Companies</div></div>
+  <div class="stat"><div class="value"><%= stats.totalJobs %></div><div class="label">Job Postings</div></div>
+  <div class="stat"><div class="value"><%= stats.totalApplications %></div><div class="label">Applications</div></div>
+</div>
+
+<% if (stats.pendingCompanies > 0 || stats.pendingJobs > 0) { %>
+  <div class="card">
+    <h2>Needs Your Attention</h2>
+    <div class="actions-row">
+      <% if (stats.pendingCompanies > 0) { %>
+        <a class="button" href="/admin/companies?status=pending"><%= stats.pendingCompanies %> compan<%= stats.pendingCompanies === 1 ? 'y' : 'ies' %> awaiting review</a>
+      <% } %>
+      <% if (stats.pendingJobs > 0) { %>
+        <a class="button secondary" href="/admin/jobs?status=pending"><%= stats.pendingJobs %> job posting<%= stats.pendingJobs === 1 ? '' : 's' %> awaiting review</a>
+      <% } %>
+    </div>
+  </div>
+<% } %>
+
+<div class="card">
+  <h2>Recent Admin Activity</h2>
+  <% if (recentLogs.length === 0) { %>
+    <p class="muted">No actions logged yet.</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Action</th><th>Target</th><th>Reviewer</th><th>When</th></tr></thead>
+        <tbody>
+          <% recentLogs.forEach(function(log) { %>
+            <tr>
+              <td><span class="badge badge-<%= log.action === 'approved' ? 'approved' : 'rejected' %>"><%= log.action %></span></td>
+              <td><%= log.target_type %> #<%= log.target_id %> &mdash; <%= log.details %></td>
+              <td><%= log.admin_name %> (ID <%= log.admin_user_id %>)</td>
+              <td><%= new Date(log.created_at).toLocaleString() %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+    <p><a href="/admin/logs">View full audit log &rarr;</a></p>
+  <% } %>
+</div>
+<%- include('../partials/footer') %>

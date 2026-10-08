@@ -1,0 +1,68 @@
+<%- include('../partials/header', { title: job.title }) %>
+<a href="/recruiter/jobs" class="muted small">&larr; Back to job postings</a>
+<div class="card">
+  <h1><%= job.title %> <span class="badge badge-<%= job.status %>"><%= job.status %></span></h1>
+  <p class="muted"><%= job.location %> &middot; <%= job.package_lpa %> &middot; Min CGPA <%= job.min_cgpa %> &middot; Branches: <%= job.allowed_branches || 'All' %></p>
+  <p><%= job.description %></p>
+</div>
+
+<div class="card">
+  <h2>Applicants (<%= applicants.length %>)</h2>
+
+  <% if (applicants.length === 0) { %>
+    <p class="muted">No applications yet.</p>
+  <% } else { %>
+    <form action="/recruiter/jobs/<%= job.id %>/applicants/status" method="POST">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="checkbox-cell"><input type="checkbox" id="select-all" /></th>
+              <th>Student</th>
+              <th>Branch</th>
+              <th>CGPA</th>
+              <th>Grad Year</th>
+              <th>Resume</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% applicants.forEach(function(a) { %>
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" name="application_ids" value="<%= a.id %>" class="applicant-checkbox" /></td>
+                <td><%= a.student_name %><br /><span class="muted small"><%= a.student_email %></span></td>
+                <td><%= a.branch %></td>
+                <td><%= a.cgpa %></td>
+                <td><%= a.graduation_year %></td>
+                <td><% if (a.resume_link) { %><a href="<%= a.resume_link %>" target="_blank" rel="noopener">View</a><% } else { %><span class="muted">—</span><% } %></td>
+                <td><span class="badge badge-<%= a.status %>"><%= a.status.replace('_', ' ') %></span></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="actions-row" style="margin-top: 16px;">
+        <span class="small muted">Select applicants above, choose a status, then apply (works for one or many):</span>
+        <select name="status" required>
+          <option value="under_review">Under Review</option>
+          <option value="shortlisted">Shortlisted</option>
+          <option value="rejected">Rejected</option>
+          <option value="hired">Hired</option>
+          <option value="applied">Applied</option>
+        </select>
+        <button type="submit" class="button small">Update Status</button>
+      </div>
+    </form>
+  <% } %>
+</div>
+
+<script>
+  const selectAll = document.getElementById('select-all');
+  if (selectAll) {
+    selectAll.addEventListener('change', () => {
+      document.querySelectorAll('.applicant-checkbox').forEach((cb) => { cb.checked = selectAll.checked; });
+    });
+  }
+</script>
+<%- include('../partials/footer') %>

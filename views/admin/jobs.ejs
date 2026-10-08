@@ -1,0 +1,51 @@
+<%- include('../partials/header', { title: 'Job Postings' }) %>
+<h1>Job Postings</h1>
+
+<div class="tabs">
+  <a href="/admin/jobs?status=pending" class="<%= filter === 'pending' ? 'active' : '' %>">Pending</a>
+  <a href="/admin/jobs?status=approved" class="<%= filter === 'approved' ? 'active' : '' %>">Approved</a>
+  <a href="/admin/jobs?status=rejected" class="<%= filter === 'rejected' ? 'active' : '' %>">Rejected</a>
+</div>
+
+<% if (jobs.length === 0) { %>
+  <div class="card empty-state">No <%= filter %> job postings.</div>
+<% } else { %>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Title</th><th>Company</th><th>Min CGPA</th><th>Branches</th><th>Applicants</th><th>Posted</th><th>Actions</th></tr></thead>
+        <tbody>
+          <% jobs.forEach(function(job) { %>
+            <tr>
+              <td><%= job.title %></td>
+              <td><%= job.company_name %>
+                <% if (job.company_status !== 'approved') { %>
+                  <br /><span class="badge badge-<%= job.company_status %>">company <%= job.company_status %></span>
+                <% } %>
+              </td>
+              <td><%= job.min_cgpa %></td>
+              <td><%= job.allowed_branches || 'All' %></td>
+              <td><%= job.applicant_count %></td>
+              <td><%= new Date(job.created_at).toLocaleDateString() %></td>
+              <td>
+                <% if (filter === 'pending') { %>
+                  <div class="actions-row">
+                    <form action="/admin/jobs/<%= job.id %>/approve" method="POST">
+                      <button type="submit" class="button small">Approve</button>
+                    </form>
+                    <form action="/admin/jobs/<%= job.id %>/reject" method="POST">
+                      <button type="submit" class="button small danger">Reject</button>
+                    </form>
+                  </div>
+                <% } else { %>
+                  <span class="badge badge-<%= job.status %>"><%= job.status %></span>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% } %>
+<%- include('../partials/footer') %>

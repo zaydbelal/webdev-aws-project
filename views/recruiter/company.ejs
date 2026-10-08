@@ -1,0 +1,23 @@
+<%- include('../partials/header', { title: 'Company Profile' }) %>
+<h1>Company Profile</h1>
+<div class="card narrow">
+  <% if (company) { %>
+    <p>Status: <span class="badge badge-<%= company.status %>"><%= company.status %></span></p>
+  <% } %>
+  <form action="/recruiter/company" method="POST" class="form">
+    <label>Company Name
+      <input type="text" name="name" value="<%= company ? company.name : '' %>" required />
+    </label>
+    <label>Website
+      <input type="url" name="website" value="<%= company ? company.website : '' %>" placeholder="https://..." />
+    </label>
+    <label>Description
+      <textarea name="description" rows="4"><%= company ? company.description : '' %></textarea>
+    </label>
+    <button type="submit" class="button"><%= company ? 'Save Changes' : 'Create Company Profile' %></button>
+  </form>
+  <% if (!company) { %>
+    <p class="muted small">New companies must be approved by the Placement Cell before job postings become visible to students.</p>
+  <% } %>
+</div>
+<%- include('../partials/footer') %>

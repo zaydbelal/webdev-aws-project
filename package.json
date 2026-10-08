@@ -1,0 +1,22 @@
+{
+  "name": "campus-placement-portal",
+  "version": "1.0.0",
+  "description": "Campus Placement & Internship Portal - a three-tier role-based recruitment platform for Student Applicants, Company Recruiters, and Placement Cell Administrators.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node src/db/seed.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.3.0",
+    "connect-sqlite3": "^0.9.13",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "method-override": "^3.0.0"
+  }
+}

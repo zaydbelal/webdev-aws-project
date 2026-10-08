@@ -1,0 +1,24 @@
+<%- include('../partials/header', { title: 'Log In' }) %>
+<div class="card narrow">
+  <h1>Log In</h1>
+  <form action="/login" method="POST" class="form">
+    <label>Email
+      <input type="email" name="email" required autofocus />
+    </label>
+    <label>Password
+      <input type="password" name="password" required />
+    </label>
+    <button type="submit" class="button">Log In</button>
+  </form>
+  <p class="muted">Don't have an account? <a href="/register">Register here</a>.</p>
+
+  <details class="hint">
+    <summary>Mock credentials (for evaluators)</summary>
+    <ul>
+      <li><strong>Admin:</strong> admin@portal.edu / Admin@123</li>
+      <li><strong>Recruiter:</strong> recruiter1@techcorp.com / Recruiter@123</li>
+      <li><strong>Student:</strong> student1@college.edu / Student@123</li>
+    </ul>
+  </details>
+</div>
+<%- include('../partials/footer') %>

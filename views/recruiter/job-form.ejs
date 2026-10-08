@@ -1,0 +1,27 @@
+<%- include('../partials/header', { title: 'New Job Posting' }) %>
+<h1>New Job Posting</h1>
+<div class="card narrow">
+  <form action="/recruiter/jobs" method="POST" class="form">
+    <label>Job Title
+      <input type="text" name="title" value="<%= form.title || '' %>" required />
+    </label>
+    <label>Description
+      <textarea name="description" rows="4"><%= form.description || '' %></textarea>
+    </label>
+    <label>Location
+      <input type="text" name="location" value="<%= form.location || '' %>" placeholder="e.g. Bengaluru, India / Remote" />
+    </label>
+    <label>Package (LPA)
+      <input type="text" name="package_lpa" value="<%= form.package_lpa || '' %>" placeholder="e.g. 10 LPA" />
+    </label>
+    <label>Minimum CGPA
+      <input type="number" step="0.01" min="0" max="10" name="min_cgpa" value="<%= form.min_cgpa || '0' %>" required />
+    </label>
+    <label>Allowed Branches
+      <input type="text" name="allowed_branches" value="<%= form.allowed_branches || '' %>" placeholder="e.g. CSE,IT (leave blank for all branches)" />
+    </label>
+    <button type="submit" class="button">Submit for Approval</button>
+  </form>
+  <p class="muted small">Job postings require Placement Cell approval before they appear to students.</p>
+</div>
+<%- include('../partials/footer') %>
